@@ -30,11 +30,14 @@ public class FindWarehouseItem implements RequestHandler<Integer, WarehouseItem>
 	 * @param context
 	 *            context
 	 * 
-	 * @return WarehouseItem the warehouse found or null otherwise
+	 * @return WarehouseItem the warehouse found
 	 */
 	public WarehouseItem handleRequest(Integer productId, Context context) {
 
-		WarehouseItem warehouseItem = null;
+		WarehouseItem warehouseItem = new WarehouseItem();
+		warehouseItem.setProductId(productId);
+		warehouseItem.setQuantity(0);
+		
 		ResultSet resultSet = null;
 
 		try (Connection connection = getConnection(context);
