@@ -15,7 +15,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  * @author sergioleottau
  *
  */
-public class FindWarehouseItem implements RequestHandler<Integer, WarehouseItem> {
+public class FindWarehouseItem implements RequestHandler<String, WarehouseItem> {
 
 	/**
 	 * The query to search a warehouse item
@@ -32,10 +32,12 @@ public class FindWarehouseItem implements RequestHandler<Integer, WarehouseItem>
 	 * 
 	 * @return WarehouseItem the warehouse found
 	 */
-	public WarehouseItem handleRequest(Integer productId, Context context) {
+	public WarehouseItem handleRequest(String productId, Context context) {
 
+		Integer product = Integer.valueOf(productId);
+		
 		WarehouseItem warehouseItem = new WarehouseItem();
-		warehouseItem.setProductId(productId);
+		warehouseItem.setProductId(product);
 		warehouseItem.setQuantity(0);
 		
 		ResultSet resultSet = null;
@@ -43,7 +45,7 @@ public class FindWarehouseItem implements RequestHandler<Integer, WarehouseItem>
 		try (Connection connection = getConnection(context);
 				PreparedStatement preparedStatement = connection.prepareStatement(FIND_WAREHOUSE_ITEM)) {
 
-			preparedStatement.setInt(1, productId);
+			preparedStatement.setInt(1, product);
 
 			resultSet = preparedStatement.executeQuery();
 
